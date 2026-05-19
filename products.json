@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "Wireless Earbuds",
+    "price": 1499,
+    "oldprice": 2499,
+    "desc": "Premium sound quality earbuds",
+    "details": "Bluetooth 5.3, Noise Cancellation, 30 Hours Battery",
+    "stock": "In Stock",
+    "delivery": "3-5 Days",
+    "images": [
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b"
+    ],
+    "video": "https://www.w3schools.com/html/mov_bbb.mp4",
+    "comments": [
+      {
+        "user": "Rahul",
+        "text": "Very good quality 😄"
+      }
+    ]
+  }
+]
