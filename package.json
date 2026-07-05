@@ -1,10 +1,13 @@
 {
-    "name": "dropshipping",
-    "version": "1.0.0",
-    "main": "app.js",
-    "dependencies": {
-        "body-parser": "^1.20.5",
-        "express": "^4.22.2",
-        "express-session": "^1.19.0"
-    }
+  "name": "dropshipping",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.5",
+    "express": "^4.22.2",
+    "express-session": "^1.19.0"
+  }
 }
