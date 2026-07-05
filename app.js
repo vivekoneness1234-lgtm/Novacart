@@ -240,6 +240,15 @@ app.post("/buy", (req, res) => {
     address: req.body.address
   });
 
+  orders.push({
+    id: Date.now(),
+    product: req.body.product,
+    name: req.body.name,
+    phone: req.body.phone,
+    address: req.body.address,
+    status: "Pending"
+  });
+
   fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
 
   res.send(`
@@ -419,6 +428,170 @@ app.get("/delete/:id", isLoggedIn, (req, res) => {
   res.redirect("/admin");
 });
 
+// VIEW ORDERS (ADMIN ONLY)
+app.get("/orders", isLoggedIn, (req, res) => {
+
+  let orders = [];
+
+  if (fs.existsSync("orders.json")) {
+    orders = JSON.parse(fs.readFileSync("orders.json"));
+  }
+
+  let html = `
+  <link rel="stylesheet" href="/style.css">
+  <h1>All Orders</h1>
+  `;
+
+  if (orders.length === 0) {
+    html += "<p>No orders yet.</p>";
+  }
+  orders.forEach(o => {
+
+    html += `
+    <div class="card">
+  
+      <h3>${o.product}</h3>
+  
+      <p><b>Customer:</b> ${o.name}</p>
+  
+      <p><b>Phone:</b> ${o.phone}</p>
+  
+      <p><b>Address:</b> ${o.address}</p>
+  
+      <p><b>Status:</b> ${o.status}</p>
+  
+      <a href="/accept-order/${o.id}">Accept</a>
+      |
+      <a href="/ship-order/${o.id}">Ship</a>
+      |
+      <a href="/deliver-order/${o.id}">Deliver</a>
+      |
+      <a href="/delete-order/${o.id}">Delete</a>
+  
+    </div>
+    `;
+  });
+  res.send(html);
+
+});
+
+
+app.get("/accept-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  let order = orders.find(o => o.id == req.params.id);
+
+  if (order) {
+    order.status = "Accepted";
+  }
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+
+app.get("/ship-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  let order = orders.find(o => o.id == req.params.id);
+
+  if (order) {
+    order.status = "Shipped";
+  }
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+
+app.get("/deliver-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  let order = orders.find(o => o.id == req.params.id);
+
+  if (order) {
+    order.status = "Delivered";
+  }
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+
+app.get("/delete-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  orders = orders.filter(o => o.id != req.params.id);
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+// LOGOUT
+app.get("/accept-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  let order = orders.find(o => o.id == req.params.id);
+
+  if (order) {
+    order.status = "Accepted";
+  }
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+app.get("/ship-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  let order = orders.find(o => o.id == req.params.id);
+
+  if (order) {
+    order.status = "Shipped";
+  }
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+app.get("/deliver-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  let order = orders.find(o => o.id == req.params.id);
+
+  if (order) {
+    order.status = "Delivered";
+  }
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
+app.get("/delete-order/:id", isLoggedIn, (req, res) => {
+
+  let orders = JSON.parse(fs.readFileSync("orders.json"));
+
+  orders = orders.filter(o => o.id != req.params.id);
+
+  fs.writeFileSync("orders.json", JSON.stringify(orders, null, 2));
+
+  res.redirect("/orders");
+});
+
 // LOGOUT
 app.get("/logout", (req, res) => {
 
@@ -426,7 +599,3 @@ app.get("/logout", (req, res) => {
 
   res.redirect("/");
 });
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => console.log("Server Running"));
